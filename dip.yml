@@ -13,9 +13,9 @@ interaction:
   sh:
     service: uploader
 
-  irb:
+  cc:
     service: uploader
-    command: bundle exec irb
+    command: bundle exec pry
 
   bundle:
     service: uploader
@@ -24,6 +24,10 @@ interaction:
   web:
     service: uploader
     command: bundle exec puma -C puma.rb
+
+  rubocop:
+    service: uploader
+    command: bundle exec ./rubocop
 
 provision:
   - docker volume create --name bundler_data

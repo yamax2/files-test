@@ -1,7 +1,7 @@
 FROM ruby:2.7-alpine
 
 RUN apk add --update --no-cache \
-      tzdata openssh-client xz-dev libpq build-base less git postgresql-dev postgresql-client mc
+      tzdata openssh-client xz-dev libpq build-base less git postgresql-dev postgresql-client mc htop
 RUN cp /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime && echo 'Asia/Yekaterinburg' > /etc/timezone
 
 RUN gem update --system
