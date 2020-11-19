@@ -1,0 +1,44 @@
+version: '3.3'
+
+services:
+  uploader:
+    build:
+      context: .
+    expose:
+      - "3000"
+    depends_on:
+      - storage
+    volumes:
+      - .:/app
+      - ../gems:/localgems
+      - ssh-data:/ssh:ro
+      - bundler-data:/bundle
+    networks:
+      - default
+      - frontend
+    command: sh
+    environment:
+      - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
+      - SSH_AUTH_SOCK=/ssh/auth/sock
+      - VIRTUAL_HOST=klara-files.$DOCKER_TLD
+      - VIRTUAL_PATH=/
+
+  storage:
+    image: atmoz/sftp:alpine
+    volumes:
+      - ./upload:/home/foo/upload
+    command: foo:pass
+
+volumes:
+  bundler-data:
+    external:
+      name: bundler_data
+
+  ssh-data:
+    external:
+      name: ssh_data
+
+networks:
+  frontend:
+    external:
+      name: frontend

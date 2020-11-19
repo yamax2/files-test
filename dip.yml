@@ -1,0 +1,31 @@
+version: '3.3'
+
+environment:
+  DOCKER_TLD: localhost
+  DOCKER_RUBY_VERSION: 2.7
+
+compose:
+  files:
+    - docker-compose.yml
+  project_name: klara-files
+
+interaction:
+  sh:
+    service: uploader
+
+  irb:
+    service: uploader
+    command: bundle exec irb
+
+  bundle:
+    service: uploader
+    command: bundle
+
+  web:
+    service: uploader
+    command: bundle exec puma -C puma.rb
+
+provision:
+  - docker volume create --name bundler_data
+  - mkdir -p upload
+  - dip bundle install
