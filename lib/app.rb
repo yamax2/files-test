@@ -18,7 +18,7 @@ class Application < Sinatra::Base
   end
 
   get '/download' do
-    response = HTTP.follow.get('https://e1.ru')
+    response = HTTP.follow.get('http://tretyakov-ma.ru')
 
     stream do |out|
       response.body.each do |chunk|

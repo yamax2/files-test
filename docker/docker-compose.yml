@@ -4,6 +4,7 @@ services:
   app:
     build:
       context: ../
+      dockerfile: ./docker/Dockerfile
     expose:
       - "3000"
     depends_on:

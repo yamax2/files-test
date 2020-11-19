@@ -8,6 +8,6 @@
 
 generate file:
 ```
-timeout 10 sh -c 'cat /dev/urandom | base64' > dump.txt
+timeout 1 sh -c 'cat /dev/urandom | base64' > dump.txt
 curl -X PUT files-test.localhost/upload --data-binary "@dump.txt"
 ```
