@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gem 'activesupport', '>= 6'
 gem 'http'
 gem 'irb', require: false
+gem 'net-sftp'
 gem 'pry'
 gem 'puma'
 gem 'sinatra'

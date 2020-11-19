@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
-require './lib/app'
+require_relative './lib/app'
+
+Rack::Utils.key_space_limit = 100.megabytes
 
 run Application

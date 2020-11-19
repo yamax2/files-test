@@ -6,27 +6,28 @@ environment:
 
 compose:
   files:
-    - docker-compose.yml
-  project_name: klara-files
+    - docker/docker-compose.yml
+  project_name: files_test
 
 interaction:
   sh:
-    service: uploader
+    service: app
+    command: sh
 
   cc:
-    service: uploader
+    service: app
     command: bundle exec pry
 
   bundle:
-    service: uploader
+    service: app
     command: bundle
 
   web:
-    service: uploader
-    command: bundle exec puma -C puma.rb
+    service: app
+    compose_method: up
 
   rubocop:
-    service: uploader
+    service: app
     command: bundle exec ./rubocop
 
 provision:

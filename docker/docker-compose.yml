@@ -1,33 +1,35 @@
 version: '3.3'
 
 services:
-  uploader:
+  app:
     build:
-      context: .
+      context: ../
     expose:
       - "3000"
     depends_on:
       - storage
     volumes:
-      - .:/app
-      - ../gems:/localgems
+      - ..:/app
+      - ../../gems:/localgems
       - ssh-data:/ssh:ro
       - bundler-data:/bundle
     networks:
       - default
       - frontend
-    command: sh
+    command: bundle exec puma -C puma.rb
     environment:
       - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
       - SSH_AUTH_SOCK=/ssh/auth/sock
-      - VIRTUAL_HOST=klara-files.$DOCKER_TLD
+      - VIRTUAL_HOST=files-test.$DOCKER_TLD
       - VIRTUAL_PATH=/
+    stdin_open: true
+    tty: true
 
   storage:
     image: atmoz/sftp:alpine
     volumes:
-      - ./upload:/home/foo/upload
-    command: foo:pass
+      - ../upload:/home/foo/upload
+    command: foo:pass:::upload
 
 volumes:
   bundler-data:
