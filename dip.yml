@@ -3,6 +3,7 @@ version: '3.3'
 environment:
   DOCKER_TLD: localhost
   DOCKER_RUBY_VERSION: 2.7
+  RACK_ENV: development
 
 compose:
   files:
