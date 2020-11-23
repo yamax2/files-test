@@ -11,7 +11,7 @@ require 'sinatra'
 require 'sinatra/streaming'
 
 class Application < Sinatra::Base
-  CHUNK_SIZE = 64.kilobytes
+  CHUNK_SIZE = 128.kilobytes
 
   get '/' do
     '<h1>Hello!</h1>'
@@ -41,6 +41,20 @@ class Application < Sinatra::Base
         break if out.closed?
 
         out << chunk
+      end
+    end
+  end
+
+  get '/download_local' do
+    stream do |out|
+      out.define_singleton_method(:write) { |data| self << data }
+
+      Net::SFTP.start('storage', 'foo', {password: 'pass'}) do |sftp|
+        sftp.download!(
+          'upload/test',
+          out,
+          read_size: CHUNK_SIZE
+        )
       end
     end
   end

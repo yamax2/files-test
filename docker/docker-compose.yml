@@ -7,8 +7,6 @@ services:
       dockerfile: ./docker/Dockerfile
     expose:
       - "3000"
-    ports:
-      - "8081:3000"
     depends_on:
       - storage
     volumes:
@@ -33,6 +31,23 @@ services:
     volumes:
       - ../upload:/home/foo/upload
     command: foo:pass:::upload
+
+  proxy:
+    build:
+      context: ../proxy
+      dockerfile: ../docker/Dockerfile.go
+    working_dir: /app
+    depends_on:
+      - storage
+    command: 'go run main.go'
+    expose:
+      - "8090"
+    networks:
+      - default
+      - frontend
+    volumes:
+      - ../proxy:/app
+      - ../../go:/go
 
 volumes:
   bundler-data:
