@@ -24,18 +24,18 @@ type sftpClient struct {
 // Create a new SFTP connection by given parameters
 func NewConn(host, user, password string, port int) (client *sftpClient, err error) {
     switch {
-    case `` == strings.TrimSpace(host),
-	`` == strings.TrimSpace(user),
-	`` == strings.TrimSpace(password),
-	0 >= port || port > 65535:
-	return nil, errors.New("Invalid parameters")
+        case `` == strings.TrimSpace(host),
+        `` == strings.TrimSpace(user),
+        `` == strings.TrimSpace(password),
+        0 >= port || port > 65535:
+        return nil, errors.New("Invalid parameters")
     }
 
     client = &sftpClient{
-	host:     host,
-	user:     user,
-	password: password,
-	port:     port,
+        host:     host,
+        user:     user,
+        password: password,
+        port:     port,
     }
 
     if err = client.connect(); nil != err {
