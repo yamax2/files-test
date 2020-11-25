@@ -60,13 +60,19 @@ class Application < Sinatra::Base
   end
 
   put '/upload' do
-    Net::SFTP.start('storage', 'foo', password: 'pass') do |sftp|
-      sftp.file.open('upload/test', 'w') do |f|
-        loop do
-          chunk = request.body.read(CHUNK_SIZE)
-          break unless chunk
+    halt 400, 'Bad Request' unless (files = params[:files]).present?
 
-          f.write chunk
+    files.each do |file|
+      puts file[:type]
+      io = file[:tempfile]
+
+      Net::SFTP.start('storage', 'foo', password: 'pass') do |sftp|
+        sftp.file.open("upload/#{file[:filename]}", 'w') do |f|
+          loop do
+            break if (chunk = io.read(CHUNK_SIZE)).nil?
+
+            f.write chunk
+          end
         end
       end
     end
