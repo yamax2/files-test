@@ -11,7 +11,7 @@ require 'sinatra'
 require 'sinatra/streaming'
 
 class Application < Sinatra::Base
-  CHUNK_SIZE = 128.kilobytes
+  CHUNK_SIZE = 64.kilobytes
 
   get '/' do
     '<h1>Hello!</h1>'
@@ -62,12 +62,15 @@ class Application < Sinatra::Base
   put '/upload' do
     Net::SFTP.start('storage', 'foo', password: 'pass') do |sftp|
       sftp.file.open('upload/test', 'w') do |f|
-        until request.body.eof?
+        loop do
           chunk = request.body.read(CHUNK_SIZE)
+          break unless chunk
 
           f.write chunk
         end
       end
     end
+
+    'OK'
   end
 end
